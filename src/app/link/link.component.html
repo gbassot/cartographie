@@ -1,0 +1,5 @@
+<svg class="container" [style.top.px]="origin.y" [style.left.px]="origin.x" [style.width.px]="width" [style.height.px]="height" xmlns="http://www.w3.org/2000/svg">
+  <path [attr.d]="getPathLink(0)" fill="transparent" stroke="gray" stroke-width="4px"/>
+  <path [attr.d]="getPathLink(8)" fill="transparent" stroke="darkgray" stroke-width="4px"/>
+</svg>
+{{ getDiagonale(link.between[0], link.between[1])}}
