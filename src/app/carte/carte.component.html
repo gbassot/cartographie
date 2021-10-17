@@ -1,4 +1,3 @@
-<ng-container *ngFor="let server of servers"><app-server [server]="server"></app-server></ng-container>
-<ng-container *ngFor="let link of links"><app-link [link]="link"></app-link></ng-container>
-
+<ng-container *ngFor="let server of servers$ | async"><app-server [server]="server"></app-server></ng-container>
+<ng-container *ngFor="let link of links$ | async"><app-link [link]="link"></app-link></ng-container>
 

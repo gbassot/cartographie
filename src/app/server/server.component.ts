@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Server} from '../models/server.model';
+import { Server } from '../models/documentation.model';
 
 @Component({
   selector: 'app-server',
@@ -15,5 +15,4 @@ export class ServerComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

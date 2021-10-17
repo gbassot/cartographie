@@ -1,0 +1,1 @@
+export const DIST:number=250;

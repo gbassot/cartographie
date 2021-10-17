@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {Server} from '../models/server.model';
-import {Link} from '../models/link.model';
+import {Link, Scenario, Server} from '../models/documentation.model';
+import { combineLatest, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { decrement, increment, reset } from '../stores/documentation.action';
+import { DocumentationState } from '../stores/documentation.state';
+import { getLinks, selectAllActiveServers, selectAllServers } from '../stores/server/servers.selector';
+import { selectAllScenarios } from '../stores/scenario/scenario.selector';
+import { resolveServersPositions } from '../stores/server/server.action';
 
 @Component({
   selector: 'app-carte',
@@ -9,67 +16,21 @@ import {Link} from '../models/link.model';
 })
 export class CarteComponent implements OnInit {
 
-  public servers: Server[];
-  public links: Link[];
-  constructor() { }
+  public servers$: Observable<Server[]>;
+  public links$: Observable<Link[]>;
+  public scenarios$: Observable<Scenario[]>;
+
+
+  constructor(private store: Store<DocumentationState>) { 
+    this.servers$ = this.store.select(selectAllActiveServers);
+    this.scenarios$ = this.store.select(selectAllScenarios);
+    this.links$ = this.store.select(getLinks);
+    combineLatest(this.servers$, this.links$).subscribe(([servers, links]) => {
+      this.store.dispatch(resolveServersPositions({activeServers: servers, links: links}));
+    });
+  }
 
   ngOnInit(): void {
-    const japi: Server = {
-      id: 1,
-      name: 'JAPI',
-      coordinates: {
-        x: 500,
-        y: 300,
-      }
-    };
-    const jwebshopBack: Server = {
-      id: 2,
-      name: 'Webshop Symfony',
-      coordinates: {
-        x: 200,
-        y: 100,
-      }
-    };
-    const jwebshopFront: Server = {
-      id: 2,
-      name: 'Webshop Front',
-      coordinates: {
-        x: 400,
-        y: 0,
-      }
-    };
-    const jac: Server = {
-      id: 3,
-      name: 'Jac2web',
-      coordinates: {
-        x: 700,
-        y: 200,
-      }
-    };
-    const jedi: Server = {
-      id: 4,
-      name: 'Jedi',
-      coordinates: {
-        x: 300,
-        y: 600,
-      }
-    };
-    const jpdf: Server = {
-      id: 5,
-      name: 'JPDF',
-      coordinates: {
-        x: 700,
-        y: 500,
-      }
-    };
-    this.servers = [japi, jwebshopBack, jwebshopFront, jac, jedi, jpdf];
-    this.links = [
-      { id: 1, between: [japi, jwebshopBack]},
-      { id: 2, between: [japi, jac]},
-      { id: 3, between: [japi, jedi]},
-      { id: 4, between: [japi, jpdf]},
-      { id: 5, between: [jwebshopFront, jwebshopBack]},
-      { id: 5, between: [jwebshopFront, japi]},
-    ];
   }
+
 }

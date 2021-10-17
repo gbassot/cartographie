@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { CarteComponent } from './carte/carte.component';
 import { ServerComponent } from './server/server.component';
 import { LinkComponent } from './link/link.component';
+import { StoreModule } from '@ngrx/store';
+import { serverReducer } from './stores/server/server.reducer';
+import { scenarioReducer } from './stores/scenario/scenario.reducer';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,8 @@ import { LinkComponent } from './link/link.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot({ servers: serverReducer, scenarios: scenarioReducer })
   ],
   providers: [],
   bootstrap: [AppComponent]
