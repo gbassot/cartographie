@@ -19,7 +19,7 @@ export class PositionResolverService {
     //premier element au centre
     sortedServers[0].coordinates = {x:500, y:500};
     this.placeNeighbors(sortedServers[0], elements, links);
-    this.slideToZero(sortedServers);
+    this.center(sortedServers);
     return sortedServers;
   }
 
@@ -59,15 +59,18 @@ export class PositionResolverService {
     neighbors.forEach((element)=>this.placeNeighbors(element, servers, links));
   }
 
-  static slideToZero(elements: Server[]): void {
+  static center(elements: Server[]): void {
+    const width=900;
+    const height=400;
+
     const minX = elements.sort((a,b) => a.coordinates.x - b.coordinates.x);
-    const offsetX = minX[0].coordinates.x-10;
+    const offsetX = minX[0].coordinates.x - ((width/2)-((minX[minX.length-1].coordinates.x-minX[0].coordinates.x)/2));
     const minY = elements.sort((a,b) => a.coordinates.y - b.coordinates.y);
-    const offsetY = minY[0].coordinates.y-10;
+    const offsetY = minY[0].coordinates.y - ((height/2)-((minY[minY.length-1].coordinates.y-minY[0].coordinates.y)/2));
     elements.forEach((element)=>{
       element.coordinates.x -= offsetX;
       element.coordinates.y -= offsetY;
-    })
+    });
   }
 
 }

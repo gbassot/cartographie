@@ -6,10 +6,10 @@ import { ServerState } from './server.state';
  
 export const initialState: ServerState = {
     servers: [
-        { name:'Srv1', key: 's1'},
-        { name:'Srv2', key: 's2'},
-        { name:'Srv3', key: 's3'},
-        { name:'Srv4', key: 's4'},
+        { name:'JAPI', key: 'japi'},
+        { name:'Webshop Back', key: 'webshop-back'},
+        { name:'Webshop Front', key: 'webshop-front'},
+        { name:'JAC', key: 'jac'},
 
     ]
 };

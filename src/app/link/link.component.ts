@@ -24,7 +24,6 @@ export class LinkComponent implements OnInit, OnChanges  {
   }
 
   ngOnChanges(): void {
-console.log(this.link);
     this.origin = this.getOrigin(this.link.between[0], this.link.between[1]);
     this.width = Math.abs(this.link.between[1].coordinates.x - this.link.between[0].coordinates.x) + 20;
     this.height = Math.abs(this.link.between[1].coordinates.y - this.link.between[0].coordinates.y) + 20;

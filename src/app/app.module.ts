@@ -9,13 +9,17 @@ import { LinkComponent } from './link/link.component';
 import { StoreModule } from '@ngrx/store';
 import { serverReducer } from './stores/server/server.reducer';
 import { scenarioReducer } from './stores/scenario/scenario.reducer';
+import { ScenarioComponent } from './scenario/scenario.component';
+import { StepComponent } from './step/step.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarteComponent,
     ServerComponent,
-    LinkComponent
+    LinkComponent,
+    ScenarioComponent,
+    StepComponent
   ],
   imports: [
     BrowserModule,

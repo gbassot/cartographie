@@ -10,3 +10,13 @@ export const selectAllScenarios = createSelector(
   selectScenarios,
   (state: ScenarioState) => state.scenarios
 );
+
+export const selectActiveScenariosOrAllScenarios = createSelector(
+  selectScenarios,
+  (state: ScenarioState) => state.activeScenarios.length>0?state.activeScenarios:state.scenarios
+);
+
+export const selectActiveScenarios = createSelector(
+  selectScenarios,
+  (state: ScenarioState) => state.activeScenarios
+);

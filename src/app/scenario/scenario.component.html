@@ -1,0 +1,12 @@
+<ng-container *ngFor="let activeScenario of activeScenarios$ | async"></ng-container>
+<div>{{scenario.name}} 
+    <button (click)="toogle()">
+        <div *ngIf="isActive">Deselect</div>
+        <div *ngIf="!isActive">Select</div>
+    </button>
+</div> 
+<div>
+    <ul>
+        <li *ngFor="let step of scenario.steps">{{step.server}}</li>
+    </ul>
+</div>
