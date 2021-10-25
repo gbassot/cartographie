@@ -17,7 +17,8 @@ export const selectAllActiveServers = createSelector(
   (servers: Server[], scenarios: Scenario[]) => {
     return servers.filter((server: Server) => scenarios.find((scenario: Scenario) => (
       scenario.steps.find((step: Step) => step.server === server.key) ||
-      scenario.steps.find((step: Step) => step.request?.target === server.key)
+      scenario.steps.find((step: Step) => step.request?.target === server.key) ||
+      scenario.steps.find((step: Step) => step.response?.target === server.key)
     )))
   }
 )

@@ -49,13 +49,6 @@ export class EditorComponent implements OnInit {
         steps: [
           { server: 'jac', request: { target: 'japi', endpoint: 'api/shapes' } }
         ]
-      },
-      {
-        name: 'JPDF',
-        steps: [
-          { server: 'jac', request: { target: 'jpdf', endpoint: 'api/pdf' } },
-          { server: 'japi', request: { target: 'jpdf', endpoint: 'api/pdf' } }
-        ]
       }
     ]
 

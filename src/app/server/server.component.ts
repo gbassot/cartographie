@@ -33,14 +33,16 @@ export class ServerComponent implements OnInit {
   }
 
   getEndpoint (activeStep: Step, servers: Server[]): Endpoint {
+    const unknownEndpoint = { name: 'Unknown', request: 'Unknown request', response: 'Unknown response', payload: 'Unknown payload' }
     const server = servers.find((server: Server) => server.key === activeStep?.request?.target || (activeStep?.response?.target && server.key === activeStep?.server))
-    if (!server.endpoints) {
+    if (!server || !server.endpoints) {
       console.log(server.name + ' has no endpoints !')
-      return null
+      return unknownEndpoint
     }
     const endpoint = server.endpoints.find((endpoint: Endpoint) => endpoint.name === activeStep?.request?.endpoint || endpoint.name === activeStep?.response?.endpoint)
     if (!endpoint) {
       console.log('Unable to find endpoint ' + activeStep?.request.endpoint + ' on server ' + server.name)
+      return unknownEndpoint
     }
     return endpoint
   }

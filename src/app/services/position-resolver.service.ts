@@ -38,10 +38,9 @@ export class PositionResolverService {
     )
     let angle = Math.PI * 2 / neighbors.length
 
-    if (neighbors.length === 3) {
+    if (neighbors.length >= 3) {
       angle = Math.PI * 2 / (neighbors.length + 1)
     }
-
     let angleOffset = 0
     if (center.neighbors) {
       angle = Math.PI * 2 / (neighbors.length + center.neighbors.length)

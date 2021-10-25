@@ -11,7 +11,15 @@ export const initialState: ScenarioState = {
 
 const _scenarioReducer = createReducer(
   initialState,
-  on(loadScenarios, (state, { scenarios }) => { return { ...state, scenarios } }),
+  on(loadScenarios, (state, { scenarios }) => {
+    let activeScenarios = []
+    let activeStep = null
+    if (state.activeScenarios.length > 0) {
+      activeScenarios = [scenarios.find((scenario: Scenario) => scenario.name === state.activeScenarios[0].name)]
+      activeStep = activeScenarios[0].steps[0]
+    }
+    return { ...state, scenarios, activeScenarios, activeStep }
+  }),
   on(toggleScenario, (state, { scenario }) => {
     let newActiveScenarios = JSON.parse(JSON.stringify(state.activeScenarios)) as Scenario[]
     if (state.activeScenarios.find((activeScenario: Scenario) => activeScenario.name === scenario.name)) {

@@ -4,7 +4,7 @@ import { combineLatest, Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 import { DocumentationState } from '../stores/documentation.state'
 import { getLinks, selectAllActiveServers } from '../stores/server/servers.selector'
-import { selectAllScenarios } from '../stores/scenario/scenario.selector'
+import { selectActiveScenarios, selectAllScenarios } from '../stores/scenario/scenario.selector'
 import { resolveServersPositions } from '../stores/server/server.action'
 import { toggleScenario } from '../stores/scenario/scenario.action'
 import { DRAW_HEIGHT, DRAW_WIDTH, SERVER_HEIGHT, SERVER_WIDTH } from '../constants/constants'
@@ -18,12 +18,14 @@ export class CarteComponent implements OnInit {
   public servers$: Observable<Server[]>;
   public links$: Observable<Link[]>;
   public scenarios$: Observable<Scenario[]>;
+  public activeScenarios$: Observable<Scenario[]>;
 
   constructor (private store: Store<DocumentationState>) {
     this.servers$ = this.store.select(selectAllActiveServers)
     this.scenarios$ = this.store.select(selectAllScenarios)
+    this.activeScenarios$ = this.store.select(selectActiveScenarios)
     this.links$ = this.store.select(getLinks)
-    combineLatest(this.servers$, this.links$).subscribe(([servers, links]) => {
+    combineLatest(this.servers$, this.links$, this.scenarios$).subscribe(([servers, links, scenarios]) => {
       this.store.dispatch(resolveServersPositions({ activeServers: servers, links: links }))
     })
   }
@@ -50,5 +52,9 @@ export class CarteComponent implements OnInit {
     } catch (e) {
       return 1
     }
+  }
+
+  public isScenarioActive (scenario: Scenario, activeScenarios: Scenario[]) {
+    return activeScenarios.find((activeScenario: Scenario) => activeScenario.name === scenario.name) !== undefined
   }
 }
