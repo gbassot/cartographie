@@ -1,1 +1,5 @@
-<p>step works!</p>
+<div [class]="((activeStep$ | async) === step)?'active':'inactive'">
+    <div *ngIf="step.request?.target">{{step.server}} request {{step?.request?.target}}</div>
+    <div *ngIf="step.response?.target">{{step.server}} respond to {{step?.response?.target}}</div>
+    <div *ngIf="step?.algo?.title">{{step.server}} run {{step?.algo?.title}}</div>
+</div>

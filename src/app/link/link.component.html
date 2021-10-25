@@ -1,4 +1,15 @@
-<svg class="container" [style.top.px]="origin.y" [style.left.px]="origin.x" [style.width.px]="width" [style.height.px]="height" xmlns="http://www.w3.org/2000/svg">
-  <path [attr.d]="getPathLink(0)" fill="transparent" stroke="gray" stroke-width="4px"/>
-  <path [attr.d]="getPathLink(8)" fill="transparent" stroke="darkgray" stroke-width="4px"/>
+<svg *ngIf="isLinkActive(activeStep$ | async)" class="container active-link" [style.top.px]="origin.y" [style.left.px]="origin.x" [style.width.px]="width" [style.height.px]="height" xmlns="http://www.w3.org/2000/svg">
+  <path [class]="getPathDirection(activeStep$ | async)" [attr.d]="getPathLink()" fill="transparent" stroke-width="4px"/>
 </svg>
+<svg *ngIf="!isLinkActive(activeStep$ | async)" class="container" [style.top.px]="origin.y" [style.left.px]="origin.x" [style.width.px]="width" [style.height.px]="height" xmlns="http://www.w3.org/2000/svg">
+  <path [attr.d]="getPathLink()" fill="transparent" stroke="lightgray" stroke-width="4px"/>
+</svg>
+<div *ngIf="isLinkActive(activeStep$ | async)"
+ class="container" [style.top.px]="endY" [style.left.px]="endX"
+>
+  <mat-chip-list aria-label="Fish selection">
+    <mat-chip [color]="((activeStep$ | async)?.request)?'primary':'accent'" selected [class]="'end-chip ' + (rotate90?'rotate90':'')+ (rotate270?'rotate270':'')">{{getEndpoint(activeStep$ | async)}}</mat-chip>
+  </mat-chip-list>
+  <!--{{getDiagonale(link.from, link.to)}} {{link.from.name}} {{link.to.name}}-->
+</div>
+

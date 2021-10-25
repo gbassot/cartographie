@@ -1,8 +1,45 @@
 .container {
-  border: 1px solid black;
-  width:100px;
-  height:100px;
-  position: absolute;
-  z-index: 100;
-  background-color: aliceblue;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    z-index: 50;
+    padding: 5px;
+    background-color: rgb(245, 245, 245);
+}
+
+.active {
+    background-color: rgb(235, 247, 235);
+    box-shadow: 0px 2px 18px -1px rgb(0 0 0 / 60%), 0px 1px 1px 0px rgb(0 0 0 / 30%), 0px 1px 3px 0px rgb(0 0 0 / 25%);
+}
+.algo {
+    width:100%;
+}
+
+mat-card-title {
+    font-size: 20px;
+}
+mat-card-content {
+    text-align: justify;
+}
+
+
+.sf,.angular {
+    width:30px;
+    height:30px;
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    opacity: 80%;
+    z-index: auto;
+}
+
+
+.php4 {
+    width:40px;
+    height:25px;
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    opacity: 80%;
+    z-index: auto;
 }

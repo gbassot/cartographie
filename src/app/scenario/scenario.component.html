@@ -1,12 +1,7 @@
-<ng-container *ngFor="let activeScenario of activeScenarios$ | async"></ng-container>
-<div>{{scenario.name}} 
-    <button (click)="toogle()">
-        <div *ngIf="isActive">Deselect</div>
-        <div *ngIf="!isActive">Select</div>
-    </button>
-</div> 
 <div>
-    <ul>
-        <li *ngFor="let step of scenario.steps">{{step.server}}</li>
-    </ul>
+    <button *ngIf="(isFirstStep$ | async)" mat-icon-button disabled><mat-icon>arrow_back</mat-icon></button>
+    <button *ngIf="!(isFirstStep$ | async)" mat-icon-button color="primary" (click)="prev()"><mat-icon>arrow_back</mat-icon></button>
+    <button *ngIf="(isLastStep$ | async)" mat-icon-button disabled><mat-icon>arrow_forward</mat-icon></button>
+    <button *ngIf="!(isLastStep$ | async)" mat-icon-button color="primary" (click)="next()"><mat-icon>arrow_forward</mat-icon></button>
 </div>
+<ng-container *ngFor="let step of scenario.steps"><app-step [step]="step"></app-step></ng-container>

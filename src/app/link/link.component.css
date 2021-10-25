@@ -1,5 +1,71 @@
 .container {
   position: absolute;
   /*border: 1px solid red;*/
-  z-index: 0;
+}
+.active-link {
+  z-index: 40;
+}
+.end-chip {
+  width: 150px;
+  z-index: 100;
+  min-height: 20px;
+  font-size: 12px;
+  line-height: 10px;
+}
+
+.rotate90 {
+  transform: rotate(90deg);
+}
+
+.rotate270 {
+  transform: rotate(270deg);
+}
+
+.path-forward-request {
+  stroke-dasharray: 5;
+  animation-name: dashforward;
+	animation-duration: 30s;
+	animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  stroke:blue;
+}
+
+.path-forward-response {
+  stroke-dasharray: 15;
+  animation-name: dashforward;
+	animation-duration: 30s;
+	animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  stroke:lightblue;
+}
+
+@keyframes dashforward {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+.path-backward-request {
+  stroke-dasharray: 5;
+  animation-name: dashbackward;
+	animation-duration: 30s;
+	animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  stroke:blue;
+}
+
+.path-backward-response {
+  stroke-dasharray: 15;
+  animation-name: dashbackward;
+	animation-duration: 30s;
+	animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  stroke:lightblue;
+}
+
+
+@keyframes dashbackward {
+  to {
+    stroke-dashoffset: 1000;
+  }
 }

@@ -1,5 +1,15 @@
-import {ElementCoordinates, Neighbor} from './mapping.model';
+import { ElementCoordinates, Neighbor } from './mapping.model'
 
+export class Endpoint {
+  name: string;
+  request: any;
+  payload?: any;
+  response: any;
+}
+
+export class Technology {
+  name: string;
+}
 
 export class Server {
   key: string;
@@ -13,17 +23,25 @@ export class Server {
 }
 
 export class Link {
-  between: Server[];
   from: Server;
   to: Server;
   endpoint?: Endpoint;
   active?: boolean;
 }
 
-export class Scenario {
-  name: string;
-  tags?: string[];
-  steps: Step[];
+export class Request {
+  target: string;
+  endpoint: string;
+}
+
+export class Response {
+  target: string;
+  endpoint: string;
+}
+
+export class Algo {
+  title: string;
+  description: string;
 }
 
 export class Step {
@@ -33,26 +51,8 @@ export class Step {
   response?: Response;
 }
 
-export class Algo {
-  title: string;
-  description: string;
-}
-
-export class Request {
-  target: string;
-  endpoint: string|Endpoint;
-}
-
-export class Response {
-  target: string|Server;
-}
-
-export class Endpoint {
-  key: string;
-  request: any;
-  response: any;
-}
-
-export class Technology {
+export class Scenario {
   name: string;
+  tags?: string[];
+  steps: Step[];
 }

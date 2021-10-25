@@ -1,4 +1,4 @@
-import { Server } from "./documentation.model";
+import { Server } from './documentation.model'
 
 export class ElementCoordinates {
   x: number;

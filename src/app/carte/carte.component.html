@@ -1,13 +1,23 @@
 <div class="container">
     <div>
-        <ng-container *ngFor="let scenario of scenarios$ | async"><app-scenario [scenario]="scenario"></app-scenario></ng-container>
+        <cdk-accordion class="example-accordion">
+            <cdk-accordion-item *ngFor="let scenario of scenarios$ | async; let index = index;" #accordionItem="cdkAccordionItem" class="example-accordion-item" role="button" tabindex="0" [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
+                [attr.aria-controls]="'accordion-body-' + index">
+                <div class="example-accordion-item-header" (click)="accordionItem.toggle(); toggle(scenario);">
+                    {{ scenario.name }}
+                </div>
+                <div class="example-accordion-item-body" role="region" [style.display]="accordionItem.expanded ? '' : 'none'" [attr.id]="'accordion-body-' + index" [attr.aria-labelledby]="'accordion-header-' + index">
+                    <app-scenario [scenario]="scenario"></app-scenario>
+                </div>
+            </cdk-accordion-item>
+        </cdk-accordion>
     </div>
-    <div class="draw">
-        <ng-container *ngFor="let server of servers$ | async"><app-server [server]="server"></app-server></ng-container>
-        <ng-container *ngFor="let link of links$ | async"><app-link [link]="link"></app-link></ng-container>
+    <div class="draw" [ngStyle]="{'-webkit-transform': 'scale('+getScale(servers$ | async)+')'}">
+        <ng-container *ngFor="let server of servers$ | async">
+            <app-server [server]="server"></app-server>
+        </ng-container>
+        <ng-container *ngFor="let link of links$ | async">
+            <app-link [link]="link"></app-link>
+        </ng-container>
     </div>
 </div>
-
-
-
-
