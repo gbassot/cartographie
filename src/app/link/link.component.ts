@@ -1,12 +1,13 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core'
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core'
 import { ElementCoordinates } from '../models/mapping.model'
 import { DIST, SERVER_HEIGHT, SERVER_WIDTH } from '../constants/constants'
-import { Link, Step } from '../models/documentation.model'
+import { Link, Server, Step } from '../models/documentation.model'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
 import { DocumentationState } from '../stores/documentation.state'
-import { selectActiveStep } from '../stores/scenario/scenario.selector'
+import { selectActiveSteps } from '../stores/scenario/scenario.selector'
+import { selectAllServers } from '../stores/server/servers.selector'
 
 @Component({
   selector: 'app-link',
@@ -15,23 +16,21 @@ import { selectActiveStep } from '../stores/scenario/scenario.selector'
 })
 export class LinkComponent implements OnInit, OnChanges {
   @Input() link: Link;
+  @Output() onHighlightEndpoint = new EventEmitter<Step>();
 
   public origin: ElementCoordinates;
   public diagonale: string;
   public width: number;
   public height: number;
+  public activeStep: Step;
 
-  public activeStep$: Observable<Step>;
-  public activeLink = false;
+  public activeSteps$: Observable<Step[]>;
 
   constructor (private store: Store<DocumentationState>) {
-    this.activeStep$ = this.store.select(selectActiveStep).pipe(tap((step:Step) => {
-      this.activeLink = (step?.server === this.link.from.key && step?.request?.target === this.link.to.key)
-    }))
+    this.activeSteps$ = this.store.select(selectActiveSteps)
   }
 
   ngOnInit (): void {
-
   }
 
   ngOnChanges (): void {
@@ -65,7 +64,7 @@ export class LinkComponent implements OnInit, OnChanges {
     switch (this.getDiagonale(this.link.from, this.link.to)) {
       case 'gd':
       case 'dg':
-        return this.origin.y - 9
+        return this.origin.y - 5
       case 'bghd':
       case 'bdhg':
       case 'dbgh':
@@ -102,8 +101,20 @@ export class LinkComponent implements OnInit, OnChanges {
     return false
   }
 
-  isLinkActive (step: Step): boolean {
-    return (step?.server === this.link.from.key && step?.request?.target === this.link.to.key) || (step?.server === this.link.to.key && step?.response?.target === this.link.from.key)
+  getActiveStep (steps: Step[]): Step {
+    this.activeStep = steps.find((step: Step) =>
+      (step?.server === this.link.from.key && step?.request?.target === this.link.to.key) ||
+      (step?.server === this.link.to.key && step?.response?.target === this.link.from.key)
+    )
+    return this.activeStep
+  }
+
+  highlightEndpoint (): void {
+    this.onHighlightEndpoint.emit(this.activeStep)
+  }
+
+  isLinkActive (steps: Step[]): boolean {
+    return !!this.getActiveStep(steps)
   }
 
   getPathDirection (step: Step): string {

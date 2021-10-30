@@ -1,0 +1,11 @@
+<div *ngIf="endpoint">
+  <button mat-icon-button (click)="edit(getCurrentEndpointEditData())">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-raised-button [color]="endpoint.active?'primary':'default'">{{ endpoint.name }}</button>
+</div>
+<div *ngIf="!endpoint">
+  <button mat-raised-button (click)="edit(getNewEndpointEditData())">Créer un endpoint</button>
+</div>
+
+

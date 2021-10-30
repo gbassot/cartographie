@@ -1,17 +1,16 @@
 import { ElementCoordinates, Neighbor } from './mapping.model'
 
 export class Endpoint {
+  id?:number
   name: string;
-  request: any;
-  payload?: any;
-  response: any;
-}
-
-export class Technology {
-  name: string;
+  request: string;
+  payload: string;
+  response: string;
+  active?: boolean;
 }
 
 export class Server {
+  id?: number;
   key: string;
   name: string;
   coordinates?: ElementCoordinates;
@@ -19,7 +18,8 @@ export class Server {
   endpoints?: Endpoint[];
   database?: string;
   repository?: string;
-  technologies?: Technology[];
+  technologies?: string[];
+  active?: boolean;
 }
 
 export class Link {
@@ -43,16 +43,28 @@ export class Algo {
   title: string;
   description: string;
 }
+export class IncludedScenario {
+  scenario: string;
+  active?: boolean
+}
 
 export class Step {
-  server: string;
+  id?: number;
+  includedScenario?: IncludedScenario;
+  server?: string;
   algo?: Algo;
   request?: Request;
   response?: Response;
+  active?:boolean
+  isIncluded?: number
 }
 
 export class Scenario {
+  id?: number;
   name: string;
+  key?: string;
   tags?: string[];
   steps: Step[];
+  computedSteps: Step[];
+  active?: boolean;
 }

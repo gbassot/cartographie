@@ -36,7 +36,7 @@
 	animation-duration: 30s;
 	animation-timing-function: linear;
   animation-iteration-count: infinite;
-  stroke:lightblue;
+  stroke:blueviolet;
 }
 
 @keyframes dashforward {
@@ -60,7 +60,7 @@
 	animation-duration: 30s;
 	animation-timing-function: linear;
   animation-iteration-count: infinite;
-  stroke:lightblue;
+  stroke:blueviolet;
 }
 
 

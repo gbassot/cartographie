@@ -1,25 +1,33 @@
-<mat-card [class]="(isServerActive(activeStep$ | async)?'active':'inactive')+ ' container'" [style.top.px]="server.coordinates.y" [style.left.px]="server.coordinates.x">
+<mat-card [class]="(isServerActive(activeSteps$ | async)?'active':'inactive')+ ' container'" [style.top.px]="server.coordinates.y" [style.left.px]="server.coordinates.x">
 
-    <!--<img *ngIf="server?.technologies[0]?.name === 'symfony'" src="../../assets/symfony.png" class='sf'>
-    <img *ngIf="server?.technologies[0]?.name === 'php4'" src="../../assets/php.png" class='php4'>
-    <img *ngIf="server?.technologies[0]?.name === 'angular'" src="../../assets/angular.png" class='angular'>-->
+  <div class="technologies">
+    <ng-container *ngFor="let technology of server.technologies">
+      <img *ngIf="technology === 'symfony'" src="../../assets/symfony.png" class='sf'>
+      <img *ngIf="technology === 'php4'" src="../../assets/php.png" class='php4'>
+      <img *ngIf="technology === 'angular'" src="../../assets/angular.png" class='angular'>
+      <img *ngIf="technology === 'api platform'" src="../../assets/apiplatform.png" class='apiplatform'>
+      <img *ngIf="technology === 'sylius'" src="../../assets/sylius.png" class='sylius'>
+      <img *ngIf="technology === 'twig'" src="../../assets/twig.png" class='twig'>
+      <img *ngIf="technology === 'google'" src="../../assets/google.png" class='google'>
+    </ng-container>
+  </div>
 
-    <mat-card-title>{{server.name}}</mat-card-title>
-    <mat-card-content *ngIf="isServerActive(activeStep$ | async) && (activeStep$ | async)?.algo?.title">
-        <button class="algo" mat-raised-button color="primary">{{(activeStep$ | async)?.algo?.title}}</button>
-        {{(activeStep$ | async)?.algo?.description}}
-    </mat-card-content>
+  <mat-card-title>{{server.name}}</mat-card-title>
+  <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.algo?.title">
+    <button class="algo" mat-raised-button color="primary">{{getActiveStep(activeSteps$ | async)?.algo?.title}}</button>
+    {{getActiveStep(activeSteps$ | async)?.algo?.description}}
+  </mat-card-content>
 
-    <mat-card-content *ngIf="isServerActive(activeStep$ | async) && (activeStep$ | async)?.request">
-        <mat-card-subtitle>Requête</mat-card-subtitle>
-        {{getEndpoint(activeStep$ | async, servers$ | async)?.request}}
-    </mat-card-content>
-    <mat-card-content *ngIf="isServerActive(activeStep$ | async) && (activeStep$ | async)?.response">
-        <mat-card-subtitle>Réponse</mat-card-subtitle>
-        {{getEndpoint(activeStep$ | async, servers$ | async)?.response}}
-    </mat-card-content>
-    <mat-card-content *ngIf="isTargetServer(activeStep$ | async) && (activeStep$ | async)?.request">
-        <mat-card-subtitle>Payload</mat-card-subtitle>
-        {{getEndpoint(activeStep$ | async, servers$ | async)?.payload}}
-    </mat-card-content>
+  <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.request">
+    <mat-card-subtitle>Requête</mat-card-subtitle>
+    <div [innerHTML]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.request | nl2br"></div>
+  </mat-card-content>
+  <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.response">
+    <mat-card-subtitle>Réponse</mat-card-subtitle>
+    <div [innerHTML]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.response | nl2br"></div>
+  </mat-card-content>
+  <mat-card-content *ngIf="isTargetServer(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.request">
+    <mat-card-subtitle>Payload</mat-card-subtitle>
+    <div [innerHTML]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.payload | nl2br"></div>
+  </mat-card-content>
 </mat-card>

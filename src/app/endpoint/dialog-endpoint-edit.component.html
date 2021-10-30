@@ -1,0 +1,23 @@
+<h3>Edition d'un endpoint</h3>
+<form [formGroup]="data.form">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Request</mat-label>
+    <textarea matInput formControlName="request" rows="6"></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Payload</mat-label>
+    <textarea matInput formControlName="payload" rows="6"></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Response</mat-label>
+    <textarea matInput formControlName="response" rows="6"></textarea>
+  </mat-form-field>
+  <button *ngIf="!data.endpoint.id" mat-raised-button color="primary" (click)="save()">Créer l'endpoint</button>
+  <button *ngIf="data.endpoint.id" mat-raised-button color="primary" (click)="save()">Sauvegarder l'endpoint</button>
+  <button *ngIf="data.endpoint.id" mat-raised-button color="warn" (click)="delete()">Supprimer l'endpoint</button>
+</form>
+

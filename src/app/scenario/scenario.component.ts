@@ -1,36 +1,44 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { Observable } from 'rxjs'
 import { Scenario } from '../models/documentation.model'
 import { DocumentationState } from '../stores/documentation.state'
-import { changeActiveStep } from '../stores/scenario/scenario.action'
-import { isFirstStep, isLastStep } from '../stores/scenario/scenario.selector'
+import { changeActiveStep, updateStepOrder } from '../stores/scenario/scenario.action'
 
 @Component({
   selector: 'app-scenario',
   templateUrl: './scenario.component.html',
   styleUrls: ['./scenario.component.css']
 })
-export class ScenarioComponent implements OnInit {
+export class ScenarioComponent {
   @Input() scenario: Scenario;
 
-  public isFirstStep$: Observable<boolean>;
-  public isLastStep$: Observable<boolean>;
+  constructor (private store: Store<DocumentationState>) {}
 
-  constructor (private store: Store<DocumentationState>) {
-    this.isFirstStep$ = this.store.select(isFirstStep)
-    this.isLastStep$ = this.store.select(isLastStep)
+  drop (event) {
+    this.store.dispatch(updateStepOrder({ scenario: this.scenario, previousIndex: event.previousIndex, currentIndex: event.currentIndex }))
   }
 
-  ngOnInit (): void {
-    console.log(this.scenario)
+  firstStepActive (): boolean {
+    return this.scenario.computedSteps[0] ? !!this.scenario.computedSteps[0].active : true
+  }
+
+  lastStepActive (): boolean {
+    return this.scenario.computedSteps[0] ? !!this.scenario.computedSteps[this.scenario.computedSteps.length - 1].active : true
   }
 
   next () {
-    this.store.dispatch(changeActiveStep({ offset: 1 }))
+    this.store.dispatch(changeActiveStep({ scenario: this.scenario, offset: 1 }))
   }
 
   prev () {
-    this.store.dispatch(changeActiveStep({ offset: -1 }))
+    this.store.dispatch(changeActiveStep({ scenario: this.scenario, offset: -1 }))
+  }
+
+  last () {
+    this.store.dispatch(changeActiveStep({ scenario: this.scenario, offset: this.scenario.computedSteps.length }))
+  }
+
+  first () {
+    this.store.dispatch(changeActiveStep({ scenario: this.scenario, offset: -this.scenario.computedSteps.length }))
   }
 }

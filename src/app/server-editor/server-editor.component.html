@@ -1,0 +1,17 @@
+<cdk-accordion-item *ngIf="server" #accordionItem="cdkAccordionItem" class="example-accordion-item" [attr.id]="'accordion-header-server-' + index" [attr.aria-expanded]="accordionItem.expanded"
+                    [attr.aria-controls]="'accordion-server-' + index"
+>
+  <div class="example-accordion-item-header" (click)="toogleServer()">
+    {{ server.name }}
+    <button *ngIf="server.active" mat-icon-button (click)="edit(getCurrentServerEditData())">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <div class="example-accordion-item-body" [style.display]="server.active ? '' : 'none'" role="region" [attr.id]="'accordion-server-' + index" [attr.aria-labelledby]="'accordion-header-server-' + index">
+    <app-endpoint *ngFor="let endpoint of server.endpoints" [server]="server" [endpoint]="endpoint"></app-endpoint>
+    <app-endpoint [server]="server"></app-endpoint>
+  </div>
+</cdk-accordion-item>
+<button *ngIf="!server" mat-raised-button (click)="edit(getNewServerEditData())">
+  Ajouter un serveur
+</button>

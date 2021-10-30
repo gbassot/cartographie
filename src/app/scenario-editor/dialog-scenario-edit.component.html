@@ -1,0 +1,16 @@
+<h3>Edition d'un scénario</h3>
+<form [formGroup]="data.form">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Key</mat-label>
+    <input matInput formControlName="key" type="text">
+  </mat-form-field>
+
+  <button *ngIf="!data.scenario.id" mat-raised-button color="primary" (click)="save()">Créer le scénario</button>
+  <button *ngIf="data.scenario.id" mat-raised-button color="primary" (click)="save()">Sauvegarder le scénario</button>
+  <button *ngIf="data.scenario.id" mat-raised-button color="warn" (click)="delete()">Supprimer le scénario</button>
+</form>
+

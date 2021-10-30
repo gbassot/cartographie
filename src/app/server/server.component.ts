@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { Endpoint, Server, Step } from '../models/documentation.model'
 import { DocumentationState } from '../stores/documentation.state'
-import { selectActiveStep } from '../stores/scenario/scenario.selector'
+import { selectActiveSteps } from '../stores/scenario/scenario.selector'
 import { selectAllActiveServers } from '../stores/server/servers.selector'
 
 @Component({
@@ -13,23 +13,31 @@ import { selectAllActiveServers } from '../stores/server/servers.selector'
 })
 export class ServerComponent implements OnInit {
   @Input() server: Server;
-  public activeStep$: Observable<Step>;
+  public activeSteps$: Observable<Step[]>;
   public servers$: Observable<Server[]>;
 
   constructor (private store: Store<DocumentationState>) {
-    this.activeStep$ = this.store.select(selectActiveStep)
+    this.activeSteps$ = this.store.select(selectActiveSteps)
     this.servers$ = this.store.select(selectAllActiveServers)
   }
 
   ngOnInit (): void {
   }
 
-  isServerActive (activeStep : Step): boolean {
-    return activeStep?.server === this.server.key
+  isServerActive (activeSteps : Step[]): boolean {
+    return !!activeSteps.find((step: Step) => step.server === this.server.key)
   }
 
-  isTargetServer (activeStep : Step): boolean {
-    return activeStep?.request?.target === this.server.key || activeStep?.response?.target === this.server.key
+  isTargetServer (activeSteps : Step[]): boolean {
+    return !!activeSteps.find((step: Step) => step?.request?.target === this.server.key || step?.response?.target === this.server.key)
+  }
+
+  getActiveStep (activeSteps : Step[]): Step {
+    const originStep = activeSteps.find((step: Step) => step.server === this.server.key)
+    if (originStep) {
+      return originStep
+    }
+    return activeSteps.find((step: Step) => step?.request?.target === this.server.key || step?.response?.target === this.server.key)
   }
 
   getEndpoint (activeStep: Step, servers: Server[]): Endpoint {
@@ -41,7 +49,7 @@ export class ServerComponent implements OnInit {
     }
     const endpoint = server.endpoints.find((endpoint: Endpoint) => endpoint.name === activeStep?.request?.endpoint || endpoint.name === activeStep?.response?.endpoint)
     if (!endpoint) {
-      console.log('Unable to find endpoint ' + activeStep?.request?.endpoint?activeStep?.request?.endpoint: activeStep?.response?.endpoint + ' on server ' + server.name)
+      console.log('Unable to find endpoint ' + (activeStep?.request?.endpoint ? activeStep?.request?.endpoint : activeStep?.response?.endpoint) + ' on server ' + server.name)
       return unknownEndpoint
     }
     return endpoint

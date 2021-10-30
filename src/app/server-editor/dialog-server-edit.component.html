@@ -1,0 +1,24 @@
+<h3>Edition d'un server</h3>
+<form [formGroup]="data.form">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Key</mat-label>
+    <input matInput formControlName="key" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Technology</mat-label>
+    <mat-select formControlName="technologies" multiple>
+      <mat-option *ngFor="let technology of technologies" [value]="technology">
+        {{technology}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button *ngIf="!data.server.id" mat-raised-button color="primary" (click)="save()">Créer le serveur</button>
+  <button *ngIf="data.server.id" mat-raised-button color="primary" (click)="save()">Sauvegarder le serveur</button>
+  <button *ngIf="data.server.id" mat-raised-button color="warn" (click)="delete()">Supprimer le serveur</button>
+</form>
+

@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~12.2.10",
     "@angular/router": "~12.2.10",
     "@ngrx/store": "^12.5.0",
+    "nl2br-pipe": "^1.2.3",
     "rxjs": "^6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.11.4"

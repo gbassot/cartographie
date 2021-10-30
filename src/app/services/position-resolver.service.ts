@@ -12,7 +12,13 @@ export class PositionResolverService {
     }
     elements = JSON.parse(JSON.stringify(elements))
     const sortedServers = elements.sort((a, b) => {
-      return links.filter((link) => (link.from.name === b.name || link.to.name === b.name)).length - links.filter((link) => (link.from.name === a.name || link.to.name === a.name)).length
+      const nbLinksB = links.filter((link) => (link.from.name === b.name || link.to.name === b.name)).length
+      const nbLinksA = links.filter((link) => (link.from.name === a.name || link.to.name === a.name)).length
+      if (nbLinksB !== nbLinksA) {
+        return nbLinksB - nbLinksA
+      } else {
+        return b.name.localeCompare(a.name)
+      }
     })
 
     sortedServers.forEach((element) => { element.coordinates = { x: 0, y: 0 } })

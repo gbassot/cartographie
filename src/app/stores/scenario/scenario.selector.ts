@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store'
 import { DocumentationState } from '../documentation.state'
 import { ScenarioState } from './scenario.state'
+import { Scenario, Step } from '../../models/documentation.model'
 
 export const selectScenarios = (state: DocumentationState) => state.scenarios
 
@@ -11,25 +12,23 @@ export const selectAllScenarios = createSelector(
 
 export const selectActiveScenariosOrAllScenarios = createSelector(
   selectScenarios,
-  (state: ScenarioState) => state.activeScenarios.length > 0 ? state.activeScenarios : state.scenarios
+  (state: ScenarioState) => state.scenarios.filter((scenario:Scenario) => scenario.active).length > 0 ? state.scenarios.filter((scenario:Scenario) => scenario.active) : state.scenarios
 )
 
 export const selectActiveScenarios = createSelector(
   selectScenarios,
-  (state: ScenarioState) => state.activeScenarios
+  (state: ScenarioState) => state.scenarios.filter((scenario: Scenario) => scenario.active)
 )
 
-export const selectActiveStep = createSelector(
+export const selectActiveSteps = createSelector(
   selectScenarios,
-  (state: ScenarioState) => state.activeStep
-)
-
-export const isFirstStep = createSelector(
-  selectScenarios,
-  (state: ScenarioState) => state.activeStep === state.activeScenarios[0]?.steps[0]
-)
-
-export const isLastStep = createSelector(
-  selectScenarios,
-  (state: ScenarioState) => state.activeStep === state.activeScenarios[0]?.steps[state.activeScenarios[0]?.steps.length - 1]
+  (state: ScenarioState) => {
+    const activeSteps: Step[] = []
+    state.scenarios.forEach((scenario:Scenario) => {
+      if (scenario.active) {
+        activeSteps.push(...scenario.computedSteps.filter((s: Step) => s.active))
+      }
+    })
+    return activeSteps
+  }
 )

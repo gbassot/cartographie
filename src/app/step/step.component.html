@@ -1,5 +1,58 @@
-<div [class]="((activeStep$ | async) === step)?'active':'inactive'">
-    <div *ngIf="step.request?.target">{{step.server}} request {{step?.request?.target}}</div>
-    <div *ngIf="step.response?.target">{{step.server}} respond to {{step?.response?.target}}</div>
-    <div *ngIf="step?.algo?.title">{{step.server}} run {{step?.algo?.title}}</div>
+<div class="step-container">
+  <button *ngIf="!step && scenario.steps.length === 0" mat-mini-fab color="primary" class="add-step first" (click)="edit(getNewStepEditData())">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
+<div *ngIf="step && !step.isIncluded" cdkDrag class="step-container">
+  <button *ngIf="stepIsActive(activeSteps$ | async) && !step.isIncluded" mat-mini-fab color="primary" class="add-step" (click)="edit(getNewStepEditData())">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button mat-icon-button disabled>
+    <mat-icon *ngIf="step.request?.target">arrow_forward</mat-icon>
+    <mat-icon *ngIf="step.response?.target">arrow_backward</mat-icon>
+    <mat-icon *ngIf="step?.algo?.title">published_with_changes</mat-icon>
+    <mat-icon *ngIf="step?.includedScenario">input</mat-icon>
+  </button>
+
+  <button mat-flat-button
+          [color]="(stepIsActive(activeSteps$ | async)?(step.includedScenario && step.includedScenario.active?'accent':'primary'):'default')"
+          (click)="toogleActive()"
+          >
+    <div *ngIf="step.includedScenario">Scenario {{getScenario().name}}</div>
+    <div *ngIf="step.request?.target">{{getServer(servers$|async,step.server).name}} request {{getServer(servers$|async,step?.request?.target).name}}</div>
+    <div *ngIf="step.response?.target">{{getServer(servers$|async,step.server).name}} respond to {{getServer(servers$|async,step?.response?.target).name}}</div>
+    <div *ngIf="step?.algo?.title">{{ getServer(servers$|async,step.server).name}} : {{step?.algo?.title}}</div>
+  </button>
+  <button  mat-icon-button *ngIf="stepIsActive(activeSteps$ | async)" (click)="edit(getCurrentStepEditData())">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button *ngIf="step.includedScenario" (click)="toogleIncludedScenario()">
+      <mat-icon *ngIf="!step.includedScenario.active">visibility</mat-icon>
+      <mat-icon *ngIf="step.includedScenario.active">visibility_off</mat-icon>
+  </button>
+</div>
+
+<div *ngIf="step && step.isIncluded" class="step-container">
+  <button mat-icon-button disabled [ngClass]="'spacer-included'+step.isIncluded">
+    <mat-icon *ngIf="step.request?.target">arrow_forward</mat-icon>
+    <mat-icon *ngIf="step.response?.target">arrow_backward</mat-icon>
+    <mat-icon *ngIf="step?.algo?.title">published_with_changes</mat-icon>
+    <mat-icon *ngIf="step?.includedScenario">input</mat-icon>
+  </button>
+
+  <button mat-flat-button
+          [color]="(stepIsActive(activeSteps$ | async)?(step.includedScenario && step.includedScenario.active?'accent':'primary'):'default')"
+          (click)="toogleActive()"
+  >
+    <div *ngIf="step.includedScenario">Scenario {{getScenario().name}}</div>
+    <div *ngIf="step.request?.target">{{getServer(servers$|async,step.server).name}} request {{getServer(servers$|async,step?.request?.target).name}}</div>
+    <div *ngIf="step.response?.target">{{getServer(servers$|async,step.server).name}} respond to {{getServer(servers$|async,step?.response?.target).name}}</div>
+    <div *ngIf="step?.algo?.title">{{ getServer(servers$|async,step.server).name}} : {{step?.algo?.title}}</div>
+  </button>
+  <button mat-icon-button *ngIf="step.includedScenario" (click)="toogleIncludedScenario()">
+    <mat-icon *ngIf="!step.includedScenario.active">visibility</mat-icon>
+    <mat-icon *ngIf="step.includedScenario.active">visibility_off</mat-icon>
+  </button>
+</div>
+
+<ng-container *ngIf="scenarios$ | async"></ng-container>

@@ -16,9 +16,9 @@ export const selectAllActiveServers = createSelector(
   selectActiveScenariosOrAllScenarios,
   (servers: Server[], scenarios: Scenario[]) => {
     return servers.filter((server: Server) => scenarios.find((scenario: Scenario) => (
-      scenario.steps.find((step: Step) => step.server === server.key) ||
-      scenario.steps.find((step: Step) => step.request?.target === server.key) ||
-      scenario.steps.find((step: Step) => step.response?.target === server.key)
+      scenario.computedSteps.find((step: Step) => step.server === server.key) ||
+      scenario.computedSteps.find((step: Step) => step.request?.target === server.key) ||
+      scenario.computedSteps.find((step: Step) => step.response?.target === server.key)
     )))
   }
 )
@@ -29,7 +29,7 @@ export const getLinks = createSelector(
   (servers: Server[], scenarios: Scenario[]) => {
     const links: Link[] = []
     scenarios.forEach((scenario: Scenario) => {
-      scenario.steps.filter((step: Step) => step.request).forEach((step: Step) => {
+      scenario.computedSteps.filter((step: Step) => step.request).forEach((step: Step) => {
         const from = servers.find((server: Server) => server.key === step.server)
         const to = servers.find((server: Server) => server.key === step.request.target)
         const link: Link = {

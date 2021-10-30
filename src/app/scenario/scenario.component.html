@@ -1,7 +1,13 @@
 <div>
-    <button *ngIf="(isFirstStep$ | async)" mat-icon-button disabled><mat-icon>arrow_back</mat-icon></button>
-    <button *ngIf="!(isFirstStep$ | async)" mat-icon-button color="primary" (click)="prev()"><mat-icon>arrow_back</mat-icon></button>
-    <button *ngIf="(isLastStep$ | async)" mat-icon-button disabled><mat-icon>arrow_forward</mat-icon></button>
-    <button *ngIf="!(isLastStep$ | async)" mat-icon-button color="primary" (click)="next()"><mat-icon>arrow_forward</mat-icon></button>
+  <button mat-icon-button color="primary" [disabled]="firstStepActive()" (click)="first()"><mat-icon>fast_rewind</mat-icon></button>
+  <button mat-icon-button color="primary" [disabled]="firstStepActive()" (click)="prev()"><mat-icon>arrow_back</mat-icon></button>
+  <button mat-icon-button color="primary" [disabled]="lastStepActive()" (click)="next()"><mat-icon>arrow_forward</mat-icon></button>
+  <button mat-icon-button color="primary" [disabled]="lastStepActive()" (click)="last()"><mat-icon>fast_forward</mat-icon></button>
 </div>
-<ng-container *ngFor="let step of scenario.steps"><app-step [step]="step"></app-step></ng-container>
+<app-step [step]="null" [scenario]="scenario" [index]="-1"></app-step>
+<div cdkDropList (cdkDropListDropped)="drop($event)">
+  <ng-container *ngFor="let step of scenario.computedSteps;let index = index;" >
+    <app-step [step]="step" [scenario]="scenario" [index]="index"></app-step>
+  </ng-container>
+</div>
+

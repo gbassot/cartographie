@@ -1,0 +1,57 @@
+<h3>Edition d'une étape</h3>
+<form [formGroup]="data.form">
+  <mat-form-field appearance="fill">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option value="normal">Normal</mat-option>
+      <mat-option value="scenario">Scenario</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="data.form.get('type').value==='scenario'">
+    <mat-form-field appearance="fill">
+      <mat-label>Scenario</mat-label>
+      <mat-select formControlName="scenario">
+        <mat-option *ngFor="let scenario of data.scenarios$ | async" [value]="scenario.key">{{scenario.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="data.form.get('type').value==='normal'">
+    <mat-form-field appearance="fill">
+      <mat-label>Server</mat-label>
+      <mat-select formControlName="server">
+        <mat-option *ngFor="let server of data.servers$ | async" [value]="server.key">{{server.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Action</mat-label>
+      <mat-select formControlName="action">
+        <mat-option *ngFor="let action of ['algo', 'request', 'response']" [value]="action">{{action}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="isRequestOrResponse()">
+      <mat-label>Target</mat-label>
+      <mat-select formControlName="target">
+        <mat-option *ngFor="let server of data.servers$ | async" [value]="server.key">{{server.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="isRequestOrResponse()">
+      <mat-label>Endpoint</mat-label>
+      <mat-select formControlName="endpoint">
+        <mat-option *ngFor="let endpoint of possibleEndpoints(data.servers$ | async)" [value]="endpoint.name">{{endpoint.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="!isRequestOrResponse()">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" type="text">
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="!isRequestOrResponse()">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" type="text" rows="5"></textarea>
+    </mat-form-field>
+  </div>
+
+  <button *ngIf="!data.step.id" mat-raised-button color="primary" (click)="save()">Créer l'étape</button>
+  <button *ngIf="data.step.id" mat-raised-button color="primary" (click)="save()">Sauvegarder</button>
+  <button *ngIf="data.step.id" mat-raised-button color="warn" (click)="delete()">Supprimer</button>
+</form>
+

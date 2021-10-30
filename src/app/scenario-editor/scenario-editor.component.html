@@ -1,0 +1,24 @@
+<cdk-accordion-item *ngIf="scenario" #accordionItem="cdkAccordionItem" class="example-accordion-item" [attr.id]="'accordion-header-scenario-' + index" [attr.aria-expanded]="accordionItem.expanded"
+                    [attr.aria-controls]="'accordion-scenario-' + index"
+>
+  <div class="example-accordion-item-header" (click)="toogleScenario()">
+    <button mat-raised-button [color]="scenario.active?'primary':'default'">{{ scenario.name }}</button>
+  </div>
+  <button *ngIf="scenario.active" mat-flat-button (click)="edit(getCurrentScenarioEditData())">
+    Editer le scénario
+  </button>
+  <div class="example-accordion-item-body" [style.display]="scenario.active ? '' : 'none'" role="region" [attr.id]="'accordion-scenario-' + index" [attr.aria-labelledby]="'accordion-header-scenario-' + index">
+    Liste des serveurs utilisés par le scénario
+    <mat-chip-list>
+      <mat-chip *ngFor="let server of getScenarioServers(allServers$ | async)">{{server.name}}</mat-chip>
+    </mat-chip-list>
+  </div>
+</cdk-accordion-item>
+<cdk-accordion-item *ngIf="!scenario">
+  <div class="example-accordion-item-header">
+    <button mat-raised-button (click)="edit(getNewScenarioEditData())">
+      Ajouter un scenario
+    </button>
+  </div>
+</cdk-accordion-item>
+<ng-container *ngIf="allServers$ | async"></ng-container>
