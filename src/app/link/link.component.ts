@@ -39,13 +39,14 @@ export class LinkComponent implements OnInit, OnChanges {
   }
 
   get endX (): number {
-    const width = 75
+    const width = 105
 
     switch (this.getDiagonale(this.link.from, this.link.to)) {
       case 'hb':
       case 'bh':
       case 'hdbg':
       case 'bdhg':
+      case 'dbgh':
         return this.origin.x - width
       case 'dg':
       case 'dhgb':
@@ -67,6 +68,7 @@ export class LinkComponent implements OnInit, OnChanges {
         return this.origin.y - 9
       case 'bghd':
       case 'bdhg':
+      case 'dbgh':
       case 'bh':
         return this.origin.y
       case 'hdbg':
@@ -105,7 +107,7 @@ export class LinkComponent implements OnInit, OnChanges {
   }
 
   getPathDirection (step: Step): string {
-    if (['dg', 'bdhg', 'hdbg', 'bh', 'dhgb'].find((diagonale) => diagonale === this.getDiagonale(this.link.from, this.link.to))) {
+    if (['dg', 'bdhg', 'hdbg', 'bh', 'dhgb', 'dbgh'].find((diagonale) => diagonale === this.getDiagonale(this.link.from, this.link.to))) {
       return (step?.request) ? 'path-backward-request' : 'path-forward-response'
     }
     return (step?.request) ? 'path-forward-request' : 'path-backward-response'

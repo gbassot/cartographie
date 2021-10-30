@@ -10,6 +10,7 @@ export const initialState: ServerState = {
       name: 'JAPI',
       key: 'japi',
       endpoints: [
+        { name: 'api/work_orders', request: 'Demande de création de BT', payload: 'POST avec la demande de creation de BT', response: 'Demande de création enrichie du numéro de BT' },
         { name: 'api/stock_request', request: 'Requete de stock avec GSM', payload: 'Materiel, client, ancienne requete de stock', response: 'Stock disponible : booleen' },
         { name: 'validate/sap', request: 'request test', payload: 'payload test', response: 'response test' },
         { name: 'send/sap', request: 'request test', payload: 'payload test', response: 'response test' }
@@ -20,6 +21,11 @@ export const initialState: ServerState = {
       name: 'Webshop Back',
       key: 'webshop-back',
       endpoints: [{
+        name: 'order/complete',
+        request: 'Validation de la commande',
+        payload: '?',
+        response: 'Numero de BT créé'
+      },{
         name: 'api/stock',
         request: 'Demande de stock pour un matériel pour un utilisateur',
         payload: 'Materiel, utilisateur, ancienne demande de stock pour JAC',
@@ -35,7 +41,11 @@ export const initialState: ServerState = {
     {
       name: 'JAC',
       key: 'jac',
-      endpoints: [{ name: 'api.php?action=stock_available', request: 'Requete de stock pour JAC', payload: "Même payload que la visustock de l'ERP", response: "Visu stock de l'ERP" }],
+      endpoints: [
+        { name: 'action/createAutoNewBT', request: 'Demande de cration de BT coté JAC', response: 'Success si le BT est bien créé',
+          payload: "L'objet WorkOrder de JAPI sérialisé en JSON"},
+        { name: 'action/getMaterialStockAvailable', request: 'Requete de stock pour JAC', payload: "Même payload que la visustock de l'ERP", response: "Visu stock de l'ERP" }
+      ],
       technologies: [{ name: 'php4' }]
     },
     {
@@ -52,6 +62,11 @@ export const initialState: ServerState = {
     {
       name: 'SAP',
       key: 'sap',
+      technologies: [{ name: 'symfony' }]
+    },
+    {
+      name: 'MailJet',
+      key: 'mailjet',
       technologies: [{ name: 'symfony' }]
     }
   ]
