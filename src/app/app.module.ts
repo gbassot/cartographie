@@ -35,6 +35,8 @@ import { EndpointComponent } from './endpoint/endpoint.component'
 import { DialogEndpointEditComponent } from './endpoint/dialog-endpoint-edit.component'
 import { DialogScenarioEditComponent } from './scenario-editor/dialog-scenario-edit.component'
 import { Nl2BrPipeModule } from 'nl2br-pipe'
+import { ColorBlockModule } from 'ngx-color/block'
+import { ColorGithubModule } from 'ngx-color/github'
 
 @NgModule({
   declarations: [
@@ -73,7 +75,8 @@ import { Nl2BrPipeModule } from 'nl2br-pipe'
     MatSidenavModule,
     MatToolbarModule,
     MatInputModule,
-    Nl2BrPipeModule
+    Nl2BrPipeModule,
+    ColorGithubModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -36,7 +36,9 @@ export class ServerEditorComponent implements OnInit {
           name: result.form.value.name,
           key: result.form.value.key,
           endpoints: result.server.endpoints,
-          technologies: result.form.value.technologies
+          technologies: result.form.value.technologies,
+          color: result.form.value.color,
+          active: result.server.active
         }
 
         this.store.dispatch(updateOrCreateServer({ server: newServer }))
@@ -60,7 +62,8 @@ export class ServerEditorComponent implements OnInit {
       name: null,
       key: null,
       endpoints: [],
-      technologies: []
+      technologies: [],
+      color: null
     }
     return {
       server: newServer,
@@ -72,7 +75,8 @@ export class ServerEditorComponent implements OnInit {
     return new FormGroup({
       name: new FormControl(server.name),
       key: new FormControl(server.key),
-      technologies: new FormControl(server.technologies)
+      technologies: new FormControl(server.technologies),
+      color: server.color ? new FormControl(server.color) : new FormControl('#c4def6')
     })
   }
 

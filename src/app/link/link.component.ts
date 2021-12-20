@@ -19,7 +19,6 @@ export class LinkComponent implements OnInit, OnChanges {
   @Output() onHighlightEndpoint = new EventEmitter<Step>();
 
   public origin: ElementCoordinates;
-  public diagonale: string;
   public width: number;
   public height: number;
   public activeStep: Step;
@@ -38,7 +37,7 @@ export class LinkComponent implements OnInit, OnChanges {
   }
 
   get endX (): number {
-    const width = 105
+    const width = 155
 
     switch (this.getDiagonale(this.link.from, this.link.to)) {
       case 'hb':

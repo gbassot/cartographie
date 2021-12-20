@@ -16,7 +16,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
+  <color-github [color]="data.form.get('color').value" (colorChange)="data.form.get('color').setValue($event)"></color-github>
   <button *ngIf="!data.server.id" mat-raised-button color="primary" (click)="save()">Créer le serveur</button>
   <button *ngIf="data.server.id" mat-raised-button color="primary" (click)="save()">Sauvegarder le serveur</button>
   <button *ngIf="data.server.id" mat-raised-button color="warn" (click)="delete()">Supprimer le serveur</button>

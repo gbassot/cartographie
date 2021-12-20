@@ -19,6 +19,7 @@ export class Server {
   database?: string;
   repository?: string;
   technologies?: string[];
+  color?: string;
   active?: boolean;
 }
 

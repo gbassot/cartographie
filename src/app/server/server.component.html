@@ -1,4 +1,8 @@
-<mat-card [class]="(isServerActive(activeSteps$ | async)?'active':'inactive')+ ' container'" [style.top.px]="server.coordinates.y" [style.left.px]="server.coordinates.x">
+<mat-card
+  [class]="(isServerActive(activeSteps$ | async)?'active':'inactive')+ ' container'"
+  [style.top.px]="server.coordinates.y"
+  [style.left.px]="server.coordinates.x"
+>
 
   <div class="technologies">
     <ng-container *ngFor="let technology of server.technologies">
@@ -12,7 +16,7 @@
     </ng-container>
   </div>
 
-  <mat-card-title>{{server.name}}</mat-card-title>
+  <mat-card-title class="title" [style.backgroundColor]="server.color">{{server.name}}</mat-card-title>
   <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.algo?.title">
     <button class="algo" mat-raised-button color="primary">{{getActiveStep(activeSteps$ | async)?.algo?.title}}</button>
     {{getActiveStep(activeSteps$ | async)?.algo?.description}}
