@@ -48,6 +48,14 @@
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" type="text" rows="5"></textarea>
     </mat-form-field>
+    <div style="height:150px;margin-bottom: 100px" *ngIf="!isRequestOrResponse()">
+      <quill-editor
+        formControlName="description"
+        [readOnly]="false"
+        [modules]="modules"
+      ></quill-editor>
+    </div>
+
   </div>
 
   <button *ngIf="!data.step.id" mat-raised-button color="primary" (click)="save()">Créer l'étape</button>

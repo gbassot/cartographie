@@ -16,6 +16,38 @@
     <mat-label>Response</mat-label>
     <textarea matInput formControlName="response" rows="6"></textarea>
   </mat-form-field>
+  <mat-grid-list cols="3" rowHeight="30px">
+    <mat-grid-tile>Request</mat-grid-tile>
+    <mat-grid-tile>Payload</mat-grid-tile>
+    <mat-grid-tile>Response</mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="3" rowHeight="400px" style="padding-bottom: 10px;">
+    <mat-grid-tile>
+      <quill-editor
+        style="height:300px;"
+        formControlName="request"
+        [readOnly]="false"
+        [modules]="modules"
+      ></quill-editor>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <quill-editor
+        style="height:300px;"
+        formControlName="payload"
+        [readOnly]="false"
+        [modules]="modules"
+      ></quill-editor>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <quill-editor
+        style="height:300px;"
+        formControlName="response"
+        [readOnly]="false"
+        [modules]="modules"
+      ></quill-editor>
+    </mat-grid-tile>
+  </mat-grid-list>
+
   <button *ngIf="!data.endpoint.id" mat-raised-button color="primary" (click)="save()">Créer l'endpoint</button>
   <button *ngIf="data.endpoint.id" mat-raised-button color="primary" (click)="save()">Sauvegarder l'endpoint</button>
   <button *ngIf="data.endpoint.id" mat-raised-button color="warn" (click)="delete()">Supprimer l'endpoint</button>

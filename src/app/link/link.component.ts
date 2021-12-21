@@ -37,7 +37,7 @@ export class LinkComponent implements OnInit, OnChanges {
   }
 
   get endX (): number {
-    const width = 155
+    const width = 205
 
     switch (this.getDiagonale(this.link.from, this.link.to)) {
       case 'hb':
@@ -68,7 +68,7 @@ export class LinkComponent implements OnInit, OnChanges {
       case 'bdhg':
       case 'dbgh':
       case 'bh':
-        return this.origin.y
+        return this.origin.y + 5
       case 'hdbg':
       case 'hgbd':
       case 'hb':

@@ -6,7 +6,7 @@
 
   <div class="technologies">
     <ng-container *ngFor="let technology of server.technologies">
-      <img *ngIf="technology === 'symfony'" src="../../assets/symfony.png" class='sf'>
+      <img *ngIf="technology === 'symfony'" src="assets/symfony.png" class='sf'>
       <img *ngIf="technology === 'php4'" src="../../assets/php.png" class='php4'>
       <img *ngIf="technology === 'angular'" src="../../assets/angular.png" class='angular'>
       <img *ngIf="technology === 'api platform'" src="../../assets/apiplatform.png" class='apiplatform'>
@@ -19,19 +19,19 @@
   <mat-card-title class="title" [style.backgroundColor]="server.color">{{server.name}}</mat-card-title>
   <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.algo?.title">
     <button class="algo" mat-raised-button color="primary">{{getActiveStep(activeSteps$ | async)?.algo?.title}}</button>
-    {{getActiveStep(activeSteps$ | async)?.algo?.description}}
+    <quill-view [content]="getActiveStep(activeSteps$ | async)?.algo?.description" format="html" theme="snow"></quill-view>
   </mat-card-content>
 
   <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.request">
     <mat-card-subtitle>Requête</mat-card-subtitle>
-    <div [innerHTML]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.request | nl2br"></div>
+    <quill-view [content]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.request" format="html" theme="snow"></quill-view>
   </mat-card-content>
   <mat-card-content *ngIf="isServerActive(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.response">
     <mat-card-subtitle>Réponse</mat-card-subtitle>
-    <div [innerHTML]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.response | nl2br"></div>
+    <quill-view [content]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.response" format="html" theme="snow"></quill-view>
   </mat-card-content>
   <mat-card-content *ngIf="isTargetServer(activeSteps$ | async) && getActiveStep(activeSteps$ | async)?.request">
     <mat-card-subtitle>Payload</mat-card-subtitle>
-    <div [innerHTML]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.payload | nl2br"></div>
+    <quill-view [content]="getEndpoint(getActiveStep(activeSteps$ | async), servers$ | async)?.payload" format="html" theme="snow"></quill-view>
   </mat-card-content>
 </mat-card>

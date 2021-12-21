@@ -1,6 +1,6 @@
 .container {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
     position: absolute;
     padding: 5px;
     background-color: #b0defa;
@@ -19,6 +19,9 @@ mat-card-title {
 }
 mat-card-content {
     text-align: justify;
+}
+mat-card-subtitle {
+  margin-bottom: 5px;
 }
 
 .technologies {
@@ -49,3 +52,9 @@ mat-card-content {
     height:25px;
     z-index: auto;
 }
+
+::ng-deep .ql-editor {
+  padding:2px 2px !important;
+}
+
+
