@@ -37,6 +37,7 @@ import { DialogScenarioEditComponent } from './scenario-editor/dialog-scenario-e
 import { Nl2BrPipeModule } from 'nl2br-pipe'
 import { ColorGithubModule } from 'ngx-color/github'
 import { QuillModule } from 'ngx-quill'
+import { MatStepperModule } from '@angular/material/stepper'
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { QuillModule } from 'ngx-quill'
     MatInputModule,
     Nl2BrPipeModule,
     ColorGithubModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

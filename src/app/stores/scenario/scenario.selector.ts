@@ -26,6 +26,7 @@ export const selectActiveSteps = createSelector(
     const activeSteps: Step[] = []
     state.scenarios.forEach((scenario:Scenario) => {
       if (scenario.active) {
+        console.log(scenario)
         activeSteps.push(...scenario.computedSteps.filter((s: Step) => s.active))
       }
     })

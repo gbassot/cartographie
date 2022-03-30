@@ -1,21 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core'
 import { Endpoint, Link, Scenario, Server, Step } from '../models/documentation.model'
 import { combineLatest, Observable } from 'rxjs'
 import { tap, take } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
 import { DocumentationState } from '../stores/documentation.state'
 import { getLinks, selectAllActiveServers, selectAllServers } from '../stores/server/servers.selector'
-import { selectActiveScenarios, selectActiveSteps, selectAllScenarios } from '../stores/scenario/scenario.selector'
+import { selectActiveScenarios, selectAllScenarios } from '../stores/scenario/scenario.selector'
 import { loadServers, resolveServersPositions, showEndpoint } from '../stores/server/server.action'
 import { loadScenarios, toggleScenario, toogleActiveStep } from '../stores/scenario/scenario.action'
 import { DRAW_HEIGHT, DRAW_WIDTH, SERVER_HEIGHT, SERVER_WIDTH } from '../constants/constants'
 import { MatSidenav } from '@angular/material/sidenav'
 import { ActivatedRoute, Router } from '@angular/router'
+import { MatStepperIntl } from '@angular/material/stepper'
+
+@Injectable()
+export class StepperIntl extends MatStepperIntl {
+  // the default optional label text, if unspecified is "Optional"
+  override optionalLabel = '';
+}
 
 @Component({
   selector: 'app-carte',
   templateUrl: './carte.component.html',
-  styleUrls: ['./carte.component.css']
+  styleUrls: ['./carte.component.css'],
+  providers: [{ provide: MatStepperIntl, useClass: StepperIntl }]
 })
 export class CarteComponent implements OnInit {
   public servers$: Observable<Server[]>;
@@ -36,9 +44,9 @@ export class CarteComponent implements OnInit {
       if (scenarios.length > 0) {
         const activeStepIndex = scenarios[0].computedSteps.findIndex((step) => step.active)
         if (activeStepIndex >= 0) {
-          // this.router.navigate(['carte', scenarios[0].key, activeStepIndex + 1])
+          this.router.navigate(['carte', scenarios[0].key, activeStepIndex + 1])
         } else {
-          // this.router.navigate(['carte', scenarios[0].key])
+          this.router.navigate(['carte', scenarios[0].key])
         }
       }
     }))
@@ -49,27 +57,6 @@ export class CarteComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    combineLatest(this.route.params, this.scenarios$).pipe(take(2)).subscribe(([params, scenarios]) => {
-      console.log(params)
-      if (!params.scenario) {
-        return null
-      }
-      const activeScenario = scenarios.find((scenario: Scenario) => {
-        return scenario.key === params.scenario
-      })
-      console.log(activeScenario)
-      if (activeScenario) {
-        scenarios.forEach((scenario) => {
-          if ((scenario.key === activeScenario.key && !scenario.active) || (scenario.key !== activeScenario.key && scenario.active)) {
-            this.store.dispatch(toggleScenario({ scenario: scenario }))
-          }
-          console.log(scenario)
-        })
-        if (params.step && activeScenario.computedSteps[params.step - 1]) {
-          this.store.dispatch(toogleActiveStep({ scenario: activeScenario, step: activeScenario.computedSteps[params.step - 1] }))
-        }
-      }
-    })
     const scenariosJSON = localStorage.getItem('scenarios')
     if (scenariosJSON) {
       const scenarios = JSON.parse(scenariosJSON)
@@ -80,6 +67,28 @@ export class CarteComponent implements OnInit {
       const servers = JSON.parse(serversJSON)
       this.store.dispatch(loadServers({ servers }))
     }
+
+    combineLatest(this.route.params, this.scenarios$).pipe(take(1), tap(
+      ([params, scenarios]) => {
+        console.log(params)
+        if (!params.scenario) {
+          return null
+        }
+        const activeScenario = scenarios.find((scenario: Scenario) => {
+          return scenario.key === params.scenario
+        })
+        if (activeScenario) {
+          scenarios.forEach((scenario) => {
+            if ((scenario.key === activeScenario.key && !scenario.active) || (scenario.key !== activeScenario.key && scenario.active)) {
+              this.store.dispatch(toggleScenario({ scenario: scenario }))
+            }
+          })
+          if (params.step && activeScenario.computedSteps[params.step - 1] && activeScenario.computedSteps[params.step - 1].active === false) {
+            this.store.dispatch(toogleActiveStep({ scenario: activeScenario, step: activeScenario.computedSteps[params.step - 1] }))
+          }
+        }
+      }
+    )).subscribe()
   }
 
   save (): void {
@@ -140,5 +149,23 @@ export class CarteComponent implements OnInit {
         this.store.dispatch(showEndpoint({ server, endpoint }))
       }
     }
+  }
+
+  getServer (servers: Server[], serverKey: string): Server {
+    return servers.find((server: Server) => server.key === serverKey)
+  }
+
+  toogleActive (scenario, event): void {
+    if (!scenario.computedSteps[event.selectedIndex].active) {
+      this.store.dispatch(toogleActiveStep({ scenario: scenario, step: scenario.computedSteps[event.selectedIndex] }))
+    }
+  }
+
+  getActiveStepIndex (scenario: Scenario): number {
+    const index = scenario.computedSteps.findIndex((step: Step) => step.active)
+    if (index >= 0) {
+      return index
+    }
+    return 0
   }
 }

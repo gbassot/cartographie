@@ -43,6 +43,29 @@
           </cdk-accordion-item>
         </cdk-accordion>
       </div>
+      <div>
+        <mat-stepper linear *ngFor="let scenario of activeScenarios$ | async; let index = index;"
+        orientation="vertical"
+        [selectedIndex]="getActiveStepIndex(scenario)"
+                     (selectionChange)="toogleActive(scenario, $event)"
+        >
+          <mat-step *ngFor="let step of scenario.steps"
+                    optional
+                    completed="false"
+                    editable="true"
+          >
+            Edit
+            <ng-template matStepLabel>
+              <div *ngIf="step.request?.target">{{getServer(servers$|async,step.server).name}} request {{getServer(servers$|async,step?.request?.target).name}}</div>
+              <div *ngIf="step.response?.target">{{getServer(servers$|async,step.server).name}} respond to {{getServer(servers$|async,step?.response?.target).name}}</div>
+              <div *ngIf="step?.algo?.title">{{ getServer(servers$|async,step.server).name}} : {{step?.algo?.title}}</div>
+            </ng-template>
+            <ng-template matStepperIcon="complete"></ng-template>
+          </mat-step>
+        </mat-stepper>
+      </div>
+
+
       <div class="draw" [ngStyle]="{'-webkit-transform': 'scale('+getScale(servers$ | async)+')'}">
         <ng-container *ngFor="let server of servers$ | async">
           <app-server [server]="server"></app-server>
